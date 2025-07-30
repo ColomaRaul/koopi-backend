@@ -2,6 +2,20 @@
 
 Koopi es una aplicación para gestionar inventarios de objetos organizados jerárquicamente. Permite registrar objetos en ubicaciones específicas dentro de una estructura anidada (ej: Casa → Habitación → Armario → Cajón).
 
+## 🎯 Niveles de Gestión
+
+### Nivel Personal (Privado)
+- **Propósito**: Gestión personal de espacios y objetos
+- **Acceso**: Solo el propietario
+- **Ejemplo**: Tu casa, tu oficina personal, tus espacios privados
+- **Funcionalidades**: CRUD completo, búsqueda personal, estadísticas privadas
+
+### Nivel Organizacional (Compartido)
+- **Propósito**: Gestión compartida de espacios y objetos
+- **Acceso**: Múltiples usuarios con diferentes roles
+- **Ejemplo**: Banda musical, empresa, organización, grupo de trabajo
+- **Funcionalidades**: Roles y permisos, auditoría, gestión de miembros
+
 ## 🏗️ Arquitectura
 
 - **Backend**: NestJS con TypeScript
@@ -24,9 +38,11 @@ Koopi es una aplicación para gestionar inventarios de objetos organizados jerá
 - [ ] Sistema de migraciones automáticas
 
 ### Fase 2: Modelos de Datos
+- [ ] Entidad `User` (usuarios del sistema)
+- [ ] Entidad `Organization` (organizaciones/grupos)
+- [ ] Entidad `OrganizationMember` (miembros y roles)
 - [ ] Entidad `Location` (ubicaciones: casa, habitación, armario, etc.)
 - [ ] Entidad `Item` (objetos/artículos)
-- [ ] Entidad `User` (usuarios del sistema)
 - [ ] Relaciones entre entidades
 - [ ] Migración inicial de base de datos
 - [ ] Scripts de migración para cambios de esquema
@@ -37,42 +53,55 @@ Koopi es una aplicación para gestionar inventarios de objetos organizados jerá
 - [ ] Guards para rutas protegidas
 - [ ] DTOs para login/registro
 - [ ] Endpoints de autenticación
+- [ ] Sistema de roles y permisos
+- [ ] Guards para verificación de permisos organizacionales
 
-### Fase 4: Gestión de Ubicaciones
-- [ ] CRUD completo para ubicaciones
+### Fase 4: Gestión de Organizaciones
+- [ ] CRUD completo para organizaciones
+- [ ] Gestión de miembros y roles
+- [ ] Invitaciones a organizaciones
+- [ ] Endpoints para organizaciones
+- [ ] Documentación Swagger para organizaciones
+
+### Fase 5: Gestión de Ubicaciones
+- [ ] CRUD completo para ubicaciones (personal y organizacional)
 - [ ] Estructura jerárquica (árbol de ubicaciones)
 - [ ] Validación de jerarquía
+- [ ] Separación por propietario (usuario u organización)
 - [ ] Endpoints para ubicaciones
 - [ ] Documentación Swagger para ubicaciones
 
-### Fase 5: Gestión de Objetos
-- [ ] CRUD completo para objetos
+### Fase 6: Gestión de Objetos
+- [ ] CRUD completo para objetos (personal y organizacional)
 - [ ] Asociación con ubicaciones
 - [ ] Búsqueda y filtros
+- [ ] Separación por propietario (usuario u organización)
 - [ ] Endpoints para objetos
 - [ ] Documentación Swagger para objetos
 
-### Fase 6: Funcionalidades Avanzadas
-- [ ] Búsqueda global de objetos
+### Fase 7: Funcionalidades Avanzadas
+- [ ] Búsqueda global de objetos (personal y organizacional)
 - [ ] Filtros por ubicación
 - [ ] Estadísticas de inventario
 - [ ] Exportación de datos
 - [ ] Importación de datos
+- [ ] Auditoría de cambios (especialmente para organizaciones)
+- [ ] Notificaciones de cambios
 
-### Fase 7: Documentación API
+### Fase 8: Documentación API
 - [ ] Configuración completa de Swagger
 - [ ] Documentación de todos los endpoints
 - [ ] Ejemplos de uso
 - [ ] Esquemas de respuesta
 - [ ] Generación de archivo JSON de Swagger
 
-### Fase 8: Testing
+### Fase 9: Testing
 - [ ] Tests unitarios
 - [ ] Tests de integración
 - [ ] Tests e2e
 - [ ] Cobertura de código
 
-### Fase 9: Optimización y Producción
+### Fase 10: Optimización y Producción
 - [ ] Optimización de consultas
 - [ ] Caché (Redis)
 - [ ] Logging
@@ -228,6 +257,7 @@ docker-compose up swagger-ui
 ```
 src/
 ├── auth/                 # Módulo de autenticación
+├── organizations/        # Módulo de organizaciones
 ├── locations/            # Módulo de ubicaciones
 ├── items/               # Módulo de objetos
 ├── users/               # Módulo de usuarios
@@ -245,32 +275,6 @@ migrations/              # Migraciones de TypeORM
 
 ## 📊 Modelos de Datos
 
-### Location (Ubicación)
-```typescript
-{
-  id: string;
-  name: string;
-  description?: string;
-  parentId?: string;     // Ubicación padre
-  userId: string;        // Propietario
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-### Item (Objeto)
-```typescript
-{
-  id: string;
-  name: string;
-  description?: string;
-  locationId: string;    // Ubicación donde está guardado
-  userId: string;        // Propietario
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
 ### User (Usuario)
 ```typescript
 {
@@ -283,6 +287,60 @@ migrations/              # Migraciones de TypeORM
 }
 ```
 
+### Organization (Organización)
+```typescript
+{
+  id: string;
+  name: string;
+  description?: string;
+  ownerId: string;       // Usuario propietario
+  isPublic: boolean;     // Si es pública o privada
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### OrganizationMember (Miembro de Organización)
+```typescript
+{
+  id: string;
+  organizationId: string;
+  userId: string;
+  role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
+  joinedAt: Date;
+  invitedBy?: string;    // Usuario que invitó
+}
+```
+
+### Location (Ubicación)
+```typescript
+{
+  id: string;
+  name: string;
+  description?: string;
+  parentId?: string;     // Ubicación padre
+  ownerType: 'USER' | 'ORGANIZATION';
+  ownerId: string;       // ID del usuario u organización
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Item (Objeto)
+```typescript
+{
+  id: string;
+  name: string;
+  description?: string;
+  locationId: string;    // Ubicación donde está guardado
+  ownerType: 'USER' | 'ORGANIZATION';
+  ownerId: string;       // ID del usuario u organización
+  assignedTo?: string;   // Usuario asignado (para organizaciones)
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
 ## 🔐 Endpoints Principales
 
 ### Autenticación
@@ -290,21 +348,37 @@ migrations/              # Migraciones de TypeORM
 - `POST /auth/login` - Inicio de sesión
 - `POST /auth/refresh` - Renovar token
 
+### Organizaciones
+- `GET /organizations` - Listar organizaciones del usuario
+- `POST /organizations` - Crear organización
+- `GET /organizations/:id` - Obtener organización
+- `PUT /organizations/:id` - Actualizar organización
+- `DELETE /organizations/:id` - Eliminar organización
+- `GET /organizations/:id/members` - Listar miembros
+- `POST /organizations/:id/members` - Invitar miembro
+- `PUT /organizations/:id/members/:userId` - Actualizar rol
+- `DELETE /organizations/:id/members/:userId` - Expulsar miembro
+
 ### Ubicaciones
-- `GET /locations` - Listar ubicaciones
+- `GET /locations` - Listar ubicaciones (personales y organizacionales)
 - `POST /locations` - Crear ubicación
 - `GET /locations/:id` - Obtener ubicación
 - `PUT /locations/:id` - Actualizar ubicación
 - `DELETE /locations/:id` - Eliminar ubicación
 - `GET /locations/:id/items` - Objetos en ubicación
+- `GET /locations/personal` - Solo ubicaciones personales
+- `GET /locations/organization/:orgId` - Ubicaciones de organización
 
 ### Objetos
-- `GET /items` - Listar objetos
+- `GET /items` - Listar objetos (personales y organizacionales)
 - `POST /items` - Crear objeto
 - `GET /items/:id` - Obtener objeto
 - `PUT /items/:id` - Actualizar objeto
 - `DELETE /items/:id` - Eliminar objeto
 - `GET /items/search` - Buscar objetos
+- `GET /items/personal` - Solo objetos personales
+- `GET /items/organization/:orgId` - Objetos de organización
+- `PUT /items/:id/assign` - Asignar objeto a usuario (organizaciones)
 
 ## 🧪 Testing
 
@@ -358,6 +432,31 @@ docker-compose logs         # Ver logs
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## 🔐 Roles y Permisos
+
+### Roles en Organizaciones:
+- **OWNER**: Propietario de la organización
+  - Puede gestionar miembros
+  - Puede eliminar la organización
+  - Acceso completo a todos los recursos
+- **ADMIN**: Administrador
+  - Puede gestionar miembros (excepto otros admins)
+  - Puede gestionar ubicaciones y objetos
+  - No puede eliminar la organización
+- **MEMBER**: Miembro activo
+  - Puede crear, editar y eliminar objetos
+  - Puede ver ubicaciones y otros objetos
+  - No puede gestionar miembros
+- **VIEWER**: Solo lectura
+  - Puede ver objetos y ubicaciones
+  - No puede crear, editar o eliminar
+  - Útil para consultas y auditoría
+
+### Permisos por Nivel:
+- **Personal**: Solo el propietario tiene acceso
+- **Organizacional**: Según el rol asignado
+- **Público**: Organizaciones marcadas como públicas (solo lectura)
 
 ## 🔄 Control de Versiones de Base de Datos
 
