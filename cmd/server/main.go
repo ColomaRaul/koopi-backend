@@ -11,9 +11,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "koopi-backend/docs"
+	// swaggerFiles "github.com/swaggo/files"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title           Koopi Events API
@@ -82,8 +81,8 @@ func setupRoutes(router *gin.Engine, db *database.DB) {
 	// API v1
 	v1 := router.Group("/api/v1")
 
-	// Swagger
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Swagger (comentado hasta generar documentación)
+	// router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Rutas públicas
 	handlers.SetupPublicRoutes(v1, db)

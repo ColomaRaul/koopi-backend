@@ -2,14 +2,11 @@ package middleware
 
 import (
 	"net/http"
-	"os"
 	"strings"
 
-	"koopi-backend/internal/config"
 	"koopi-backend/pkg/utils"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 func Auth() gin.HandlerFunc {
@@ -76,4 +73,4 @@ func RequireRole(roles ...string) gin.HandlerFunc {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
 		c.Abort()
 	}
-} 
+}

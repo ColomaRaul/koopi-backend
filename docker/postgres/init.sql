@@ -4,12 +4,5 @@
 -- Crear extensión para UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Crear usuario admin por defecto (solo para desarrollo)
--- En producción, esto debería hacerse a través de la aplicación
-INSERT INTO users (email, password, name, role) 
-VALUES (
-    'admin@koopi.com', 
-    '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- password: password
-    'Administrador',
-    'admin'
-) ON CONFLICT (email) DO NOTHING; 
+-- Nota: Los datos iniciales se insertarán después de ejecutar las migraciones
+-- desde la aplicación o usando el comando make migrate-up 
