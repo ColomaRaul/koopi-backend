@@ -1,92 +1,90 @@
-# Koopi - Sistema de Gestión de Inventarios
+# Koopi - Sistema de Gestión de Eventos
 
-Koopi es una aplicación para gestionar inventarios de objetos organizados jerárquicamente. Permite registrar objetos en ubicaciones específicas dentro de una estructura anidada (ej: Casa → Habitación → Armario → Cajón).
+Koopi es una aplicación backend para gestionar eventos de toda clase en una zona, ciudad o región. Permite a los usuarios crear, buscar y gestionar eventos como conciertos, mercados navideños, partidos de fútbol, etc., con integración para búsqueda por Maps.
 
-## 🎯 Niveles de Gestión
+## 🎯 Funcionalidades Principales
 
-### Nivel Personal (Privado)
-- **Propósito**: Gestión personal de espacios y objetos
-- **Acceso**: Solo el propietario
-- **Ejemplo**: Tu casa, tu oficina personal, tus espacios privados
-- **Funcionalidades**: CRUD completo, búsqueda personal, estadísticas privadas
+### Gestión de Eventos
+- **Creación de eventos**: Conciertos, mercados, deportes, culturales, etc.
+- **Búsqueda geográfica**: Integración con Maps para búsqueda por ubicación
+- **Categorización**: Diferentes tipos de eventos con filtros
+- **Gestión de organizadores**: Usuarios y organizaciones que crean eventos
+- **Sistema de reservas**: Para eventos que requieren inscripción
 
-### Nivel Organizacional (Compartido)
-- **Propósito**: Gestión compartida de espacios y objetos
-- **Acceso**: Múltiples usuarios con diferentes roles
-- **Ejemplo**: Banda musical, empresa, organización, grupo de trabajo
-- **Funcionalidades**: Roles y permisos, auditoría, gestión de miembros
+### Características Técnicas
+- **API RESTful**: Endpoints bien documentados
+- **Geolocalización**: Coordenadas GPS para cada evento
+- **Búsqueda avanzada**: Por fecha, ubicación, categoría, precio
+- **Autenticación**: Sistema de usuarios y organizadores
+- **Escalabilidad**: Diseñado para manejar múltiples ciudades/regiones
 
 ## 🏗️ Arquitectura
 
-- **Backend**: NestJS con TypeScript
-- **Base de Datos**: PostgreSQL (Docker)
-- **Documentación API**: Swagger/OpenAPI (Docker)
+- **Backend**: Go (Golang) con Gin framework
+- **Base de Datos**: PostgreSQL
+- **Documentación API**: Swagger/OpenAPI
 - **Autenticación**: JWT
-- **Validación**: class-validator
-- **Migraciones**: TypeORM Migrations
+- **Validación**: Go validator
+- **Migraciones**: SQL migrations con golang-migrate
+- **Geolocalización**: Integración con servicios de Maps
 
 ## 📋 Plan de Desarrollo
 
 ### Fase 1: Configuración Base ✅
-- [x] Proyecto NestJS inicializado
-- [x] CORS configurado
+- [x] Proyecto Go inicializado
 - [ ] Configuración de Docker para PostgreSQL
 - [ ] Configuración de variables de entorno (.env)
-- [ ] Configuración de TypeORM con migraciones
-- [ ] Configuración de validación (class-validator, class-transformer)
-- [ ] Configuración de Swagger/OpenAPI con Docker
-- [ ] Sistema de migraciones automáticas
+- [ ] Configuración de base de datos
+- [ ] Configuración de Gin framework
+- [ ] Configuración de Swagger/OpenAPI
+- [ ] Sistema de migraciones
 
 ### Fase 2: Modelos de Datos
 - [ ] Entidad `User` (usuarios del sistema)
-- [ ] Entidad `Organization` (organizaciones/grupos)
-- [ ] Entidad `OrganizationMember` (miembros y roles)
-- [ ] Entidad `Location` (ubicaciones: casa, habitación, armario, etc.)
-- [ ] Entidad `Item` (objetos/artículos)
+- [ ] Entidad `Organization` (organizadores de eventos)
+- [ ] Entidad `Event` (eventos)
+- [ ] Entidad `EventCategory` (categorías de eventos)
+- [ ] Entidad `Location` (ubicaciones geográficas)
+- [ ] Entidad `Booking` (reservas/inscripciones)
 - [ ] Relaciones entre entidades
 - [ ] Migración inicial de base de datos
-- [ ] Scripts de migración para cambios de esquema
 
 ### Fase 3: Autenticación y Autorización
-- [ ] Módulo de autenticación (AuthModule)
+- [ ] Módulo de autenticación
 - [ ] JWT Strategy
-- [ ] Guards para rutas protegidas
+- [ ] Middleware para rutas protegidas
 - [ ] DTOs para login/registro
 - [ ] Endpoints de autenticación
-- [ ] Sistema de roles y permisos
-- [ ] Guards para verificación de permisos organizacionales
+- [ ] Sistema de roles (usuario, organizador, admin)
 
-### Fase 4: Gestión de Organizaciones
-- [ ] CRUD completo para organizaciones
-- [ ] Gestión de miembros y roles
-- [ ] Invitaciones a organizaciones
-- [ ] Endpoints para organizaciones
-- [ ] Documentación Swagger para organizaciones
+### Fase 4: Gestión de Eventos
+- [ ] CRUD completo para eventos
+- [ ] Búsqueda por ubicación geográfica
+- [ ] Filtros por categoría, fecha, precio
+- [ ] Gestión de imágenes y multimedia
+- [ ] Endpoints para eventos
+- [ ] Documentación Swagger para eventos
 
-### Fase 5: Gestión de Ubicaciones
-- [ ] CRUD completo para ubicaciones (personal y organizacional)
-- [ ] Estructura jerárquica (árbol de ubicaciones)
-- [ ] Validación de jerarquía
-- [ ] Separación por propietario (usuario u organización)
-- [ ] Endpoints para ubicaciones
-- [ ] Documentación Swagger para ubicaciones
+### Fase 5: Sistema de Reservas
+- [ ] CRUD para reservas/inscripciones
+- [ ] Gestión de capacidad de eventos
+- [ ] Confirmaciones y cancelaciones
+- [ ] Notificaciones
+- [ ] Endpoints para reservas
 
-### Fase 6: Gestión de Objetos
-- [ ] CRUD completo para objetos (personal y organizacional)
-- [ ] Asociación con ubicaciones
-- [ ] Búsqueda y filtros
-- [ ] Separación por propietario (usuario u organización)
-- [ ] Endpoints para objetos
-- [ ] Documentación Swagger para objetos
+### Fase 6: Integración con Maps
+- [ ] Endpoints para búsqueda geográfica
+- [ ] Filtros por radio de distancia
+- [ ] Optimización de consultas espaciales
+- [ ] Integración con APIs de Maps
 
 ### Fase 7: Funcionalidades Avanzadas
-- [ ] Búsqueda global de objetos (personal y organizacional)
-- [ ] Filtros por ubicación
-- [ ] Estadísticas de inventario
+- [ ] Búsqueda avanzada con múltiples filtros
+- [ ] Estadísticas de eventos
+- [ ] Sistema de recomendaciones
 - [ ] Exportación de datos
-- [ ] Importación de datos
-- [ ] Auditoría de cambios (especialmente para organizaciones)
-- [ ] Notificaciones de cambios
+- [ ] Auditoría de cambios
+- [ ] Notificaciones push
 
 ### Fase 8: Documentación API
 - [ ] Configuración completa de Swagger
@@ -104,16 +102,16 @@ Koopi es una aplicación para gestionar inventarios de objetos organizados jerá
 ### Fase 10: Optimización y Producción
 - [ ] Optimización de consultas
 - [ ] Caché (Redis)
-- [ ] Logging
-- [ ] Monitoreo
+- [ ] Logging estructurado
+- [ ] Monitoreo y métricas
 - [ ] Configuración de producción
 
 ## 🚀 Instalación y Configuración
 
 ### Prerrequisitos
-- Node.js (v18+)
+- Go (v1.21+)
 - Docker y Docker Compose
-- npm o yarn
+- PostgreSQL
 
 ### Pasos de Instalación
 
@@ -125,7 +123,7 @@ cd koopi-backend
 
 2. **Instalar dependencias**
 ```bash
-npm install
+go mod download
 ```
 
 3. **Configurar variables de entorno**
@@ -136,14 +134,18 @@ cp .env.example .env
 # Variables de entorno para Docker:
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
-DATABASE_USERNAME=koopi_user
+DATABASE_USER=koopi_user
 DATABASE_PASSWORD=koopi_password
 DATABASE_NAME=koopi_db
 DATABASE_URL=postgresql://koopi_user:koopi_password@localhost:5432/koopi_db
 
-# Configuración de migraciones
-TYPEORM_MIGRATIONS_DIR=./migrations
-TYPEORM_MIGRATIONS_RUN=true
+# Configuración de JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRATION=24h
+
+# Configuración del servidor
+SERVER_PORT=8080
+SERVER_HOST=localhost
 ```
 
 4. **Configurar servicios con Docker**
@@ -155,17 +157,17 @@ docker-compose up -d
 docker-compose logs -f postgres
 
 # Ejecutar migraciones
-npm run migration:run
+make migrate-up
 ```
 
 5. **Ejecutar la aplicación**
 ```bash
 # Desarrollo
-npm run start:dev
+make run
 
 # Producción
-npm run build
-npm run start:prod
+make build
+make run-prod
 ```
 
 ## 🐳 Docker y Migraciones
@@ -186,158 +188,131 @@ El proyecto utiliza Docker para gestionar los servicios externos:
 
 ### Sistema de Migraciones
 
-El proyecto implementa un sistema completo de migraciones con TypeORM:
+El proyecto implementa un sistema de migraciones con golang-migrate:
 
 #### Comandos de migración:
 ```bash
-# Generar nueva migración
-npm run migration:generate -- -n NombreMigracion
-
 # Ejecutar migraciones pendientes
-npm run migration:run
+make migrate-up
 
 # Revertir última migración
-npm run migration:revert
+make migrate-down
+
+# Crear nueva migración
+make migrate-create name=migration_name
 
 # Ver estado de migraciones
-npm run migration:show
-```
-
-#### Flujo de trabajo para cambios en BD:
-1. **Desarrollo**: Modificar entidades en el código
-2. **Generar migración**: `npm run migration:generate -- -n DescripcionCambio`
-3. **Revisar**: Verificar el archivo de migración generado
-4. **Ejecutar**: `npm run migration:run`
-5. **Commit**: Incluir migración en el control de versiones
-
-#### Ejemplo de migración:
-```typescript
-// migrations/1234567890-AddUserTable.ts
-export class AddUserTable1234567890 implements MigrationInterface {
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
-            CREATE TABLE "user" (
-                "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
-                "email" character varying NOT NULL,
-                "password" character varying NOT NULL,
-                "name" character varying NOT NULL,
-                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
-                "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
-                CONSTRAINT "PK_user" PRIMARY KEY ("id")
-            )
-        `);
-    }
-
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE "user"`);
-    }
-}
+make migrate-status
 ```
 
 ## 📚 Documentación API
 
 La documentación de la API estará disponible en:
-- **Desarrollo**: http://localhost:3001/api
-- **Producción**: https://tu-dominio.com/api
-- **Docker**: http://localhost:8080 (Swagger UI)
-
-### Generación de archivo Swagger JSON
-```bash
-npm run swagger:generate
-```
-
-### Acceso a Swagger con Docker
-```bash
-# Swagger UI disponible en Docker
-docker-compose up swagger-ui
-```
+- **Desarrollo**: http://localhost:8080/swagger/index.html
+- **Producción**: https://tu-dominio.com/swagger/index.html
+- **Docker**: http://localhost:8080/swagger/index.html
 
 ## 🗂️ Estructura del Proyecto
 
 ```
-src/
-├── auth/                 # Módulo de autenticación
-├── organizations/        # Módulo de organizaciones
-├── locations/            # Módulo de ubicaciones
-├── items/               # Módulo de objetos
+cmd/
+├── server/              # Punto de entrada de la aplicación
+└── migrate/             # Herramienta de migraciones
+
+internal/
+├── auth/                # Módulo de autenticación
+├── events/              # Módulo de eventos
+├── organizations/       # Módulo de organizaciones
 ├── users/               # Módulo de usuarios
+├── bookings/            # Módulo de reservas
+├── locations/           # Módulo de ubicaciones
 ├── common/              # Utilidades comunes
 ├── config/              # Configuraciones
-└── database/            # Configuración de BD y migraciones
+├── database/            # Configuración de BD
+├── middleware/          # Middlewares
+└── handlers/            # Manejadores HTTP
 
-docker/
-├── postgres/            # Configuración PostgreSQL
-├── redis/               # Configuración Redis (opcional)
-└── swagger/             # Configuración Swagger UI
+pkg/
+├── models/              # Modelos de datos
+├── dto/                 # Data Transfer Objects
+├── utils/               # Utilidades
+└── validators/          # Validadores
 
-migrations/              # Migraciones de TypeORM
+migrations/              # Migraciones SQL
+docker/                  # Configuración Docker
+docs/                    # Documentación
 ```
 
 ## 📊 Modelos de Datos
 
 ### User (Usuario)
-```typescript
-{
-  id: string;
-  email: string;
-  password: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
+```go
+type User struct {
+    ID        uint      `json:"id" gorm:"primaryKey"`
+    Email     string    `json:"email" gorm:"unique;not null"`
+    Password  string    `json:"-" gorm:"not null"`
+    Name      string    `json:"name" gorm:"not null"`
+    Role      string    `json:"role" gorm:"default:'user'"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
 }
 ```
 
 ### Organization (Organización)
-```typescript
-{
-  id: string;
-  name: string;
-  description?: string;
-  ownerId: string;       // Usuario propietario
-  isPublic: boolean;     // Si es pública o privada
-  createdAt: Date;
-  updatedAt: Date;
+```go
+type Organization struct {
+    ID          uint      `json:"id" gorm:"primaryKey"`
+    Name        string    `json:"name" gorm:"not null"`
+    Description string    `json:"description"`
+    OwnerID     uint      `json:"owner_id" gorm:"not null"`
+    IsVerified  bool      `json:"is_verified" gorm:"default:false"`
+    CreatedAt   time.Time `json:"created_at"`
+    UpdatedAt   time.Time `json:"updated_at"`
 }
 ```
 
-### OrganizationMember (Miembro de Organización)
-```typescript
-{
-  id: string;
-  organizationId: string;
-  userId: string;
-  role: 'OWNER' | 'ADMIN' | 'MEMBER' | 'VIEWER';
-  joinedAt: Date;
-  invitedBy?: string;    // Usuario que invitó
+### Event (Evento)
+```go
+type Event struct {
+    ID          uint      `json:"id" gorm:"primaryKey"`
+    Title       string    `json:"title" gorm:"not null"`
+    Description string    `json:"description"`
+    CategoryID  uint      `json:"category_id" gorm:"not null"`
+    OrganizerID uint      `json:"organizer_id" gorm:"not null"`
+    LocationID  uint      `json:"location_id" gorm:"not null"`
+    StartDate   time.Time `json:"start_date" gorm:"not null"`
+    EndDate     time.Time `json:"end_date" gorm:"not null"`
+    Price       float64   `json:"price" gorm:"default:0"`
+    Capacity    int       `json:"capacity"`
+    IsActive    bool      `json:"is_active" gorm:"default:true"`
+    CreatedAt   time.Time `json:"created_at"`
+    UpdatedAt   time.Time `json:"updated_at"`
 }
 ```
 
 ### Location (Ubicación)
-```typescript
-{
-  id: string;
-  name: string;
-  description?: string;
-  parentId?: string;     // Ubicación padre
-  ownerType: 'USER' | 'ORGANIZATION';
-  ownerId: string;       // ID del usuario u organización
-  createdAt: Date;
-  updatedAt: Date;
+```go
+type Location struct {
+    ID        uint    `json:"id" gorm:"primaryKey"`
+    Name      string  `json:"name" gorm:"not null"`
+    Address   string  `json:"address" gorm:"not null"`
+    City      string  `json:"city" gorm:"not null"`
+    Latitude  float64 `json:"latitude" gorm:"not null"`
+    Longitude float64 `json:"longitude" gorm:"not null"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
 }
 ```
 
-### Item (Objeto)
-```typescript
-{
-  id: string;
-  name: string;
-  description?: string;
-  locationId: string;    // Ubicación donde está guardado
-  ownerType: 'USER' | 'ORGANIZATION';
-  ownerId: string;       // ID del usuario u organización
-  assignedTo?: string;   // Usuario asignado (para organizaciones)
-  createdAt: Date;
-  updatedAt: Date;
+### Booking (Reserva)
+```go
+type Booking struct {
+    ID        uint      `json:"id" gorm:"primaryKey"`
+    EventID   uint      `json:"event_id" gorm:"not null"`
+    UserID    uint      `json:"user_id" gorm:"not null"`
+    Status    string    `json:"status" gorm:"default:'pending'"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
 }
 ```
 
@@ -347,78 +322,76 @@ migrations/              # Migraciones de TypeORM
 - `POST /auth/register` - Registro de usuario
 - `POST /auth/login` - Inicio de sesión
 - `POST /auth/refresh` - Renovar token
+- `GET /auth/profile` - Obtener perfil
+
+### Eventos
+- `GET /events` - Listar eventos con filtros
+- `POST /events` - Crear evento (organizadores)
+- `GET /events/:id` - Obtener evento
+- `PUT /events/:id` - Actualizar evento
+- `DELETE /events/:id` - Eliminar evento
+- `GET /events/nearby` - Eventos cercanos por ubicación
+- `GET /events/search` - Búsqueda avanzada
 
 ### Organizaciones
-- `GET /organizations` - Listar organizaciones del usuario
+- `GET /organizations` - Listar organizaciones
 - `POST /organizations` - Crear organización
 - `GET /organizations/:id` - Obtener organización
 - `PUT /organizations/:id` - Actualizar organización
-- `DELETE /organizations/:id` - Eliminar organización
-- `GET /organizations/:id/members` - Listar miembros
-- `POST /organizations/:id/members` - Invitar miembro
-- `PUT /organizations/:id/members/:userId` - Actualizar rol
-- `DELETE /organizations/:id/members/:userId` - Expulsar miembro
+- `GET /organizations/:id/events` - Eventos de organización
+
+### Reservas
+- `GET /bookings` - Mis reservas
+- `POST /bookings` - Crear reserva
+- `GET /bookings/:id` - Obtener reserva
+- `PUT /bookings/:id/cancel` - Cancelar reserva
+- `GET /events/:id/bookings` - Reservas de evento (organizador)
 
 ### Ubicaciones
-- `GET /locations` - Listar ubicaciones (personales y organizacionales)
+- `GET /locations` - Listar ubicaciones
 - `POST /locations` - Crear ubicación
 - `GET /locations/:id` - Obtener ubicación
-- `PUT /locations/:id` - Actualizar ubicación
-- `DELETE /locations/:id` - Eliminar ubicación
-- `GET /locations/:id/items` - Objetos en ubicación
-- `GET /locations/personal` - Solo ubicaciones personales
-- `GET /locations/organization/:orgId` - Ubicaciones de organización
-
-### Objetos
-- `GET /items` - Listar objetos (personales y organizacionales)
-- `POST /items` - Crear objeto
-- `GET /items/:id` - Obtener objeto
-- `PUT /items/:id` - Actualizar objeto
-- `DELETE /items/:id` - Eliminar objeto
-- `GET /items/search` - Buscar objetos
-- `GET /items/personal` - Solo objetos personales
-- `GET /items/organization/:orgId` - Objetos de organización
-- `PUT /items/:id/assign` - Asignar objeto a usuario (organizaciones)
+- `GET /locations/search` - Buscar ubicaciones
 
 ## 🧪 Testing
 
 ```bash
 # Tests unitarios
-npm run test
+make test
 
-# Tests e2e
-npm run test:e2e
+# Tests de integración
+make test-integration
 
 # Cobertura
-npm run test:cov
+make test-coverage
 ```
 
-## 📝 Scripts Disponibles
+## 📝 Scripts Disponibles (Makefile)
 
 ```bash
 # Desarrollo
-npm run start:dev      # Desarrollo con hot reload
-npm run build          # Compilar para producción
-npm run start:prod     # Ejecutar en producción
+make run              # Ejecutar en desarrollo
+make build            # Compilar para producción
+make run-prod         # Ejecutar en producción
 
 # Testing
-npm run test           # Tests unitarios
-npm run test:e2e       # Tests e2e
-npm run test:cov       # Tests con cobertura
+make test             # Tests unitarios
+make test-integration # Tests de integración
+make test-coverage    # Tests con cobertura
 
 # Base de datos y migraciones
-npm run migration:run  # Ejecutar migraciones
-npm run migration:generate  # Generar migración
-npm run migration:revert    # Revertir última migración
-npm run migration:show      # Mostrar estado de migraciones
+make migrate-up       # Ejecutar migraciones
+make migrate-down     # Revertir migraciones
+make migrate-create   # Crear nueva migración
+make migrate-status   # Estado de migraciones
 
 # Documentación
-npm run swagger:generate    # Generar JSON de Swagger
+make swagger          # Generar documentación Swagger
 
 # Docker
-docker-compose up -d        # Levantar servicios
-docker-compose down         # Parar servicios
-docker-compose logs         # Ver logs
+make docker-up        # Levantar servicios
+make docker-down      # Parar servicios
+make docker-logs      # Ver logs
 ```
 
 ## 🤝 Contribución
@@ -435,54 +408,19 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 🔐 Roles y Permisos
 
-### Roles en Organizaciones:
-- **OWNER**: Propietario de la organización
-  - Puede gestionar miembros
-  - Puede eliminar la organización
+### Roles en el Sistema:
+- **USER**: Usuario básico
+  - Puede ver eventos públicos
+  - Puede crear reservas
+  - Puede ver su perfil y reservas
+- **ORGANIZER**: Organizador de eventos
+  - Puede crear y gestionar eventos
+  - Puede ver reservas de sus eventos
+  - Puede gestionar su organización
+- **ADMIN**: Administrador del sistema
   - Acceso completo a todos los recursos
-- **ADMIN**: Administrador
-  - Puede gestionar miembros (excepto otros admins)
-  - Puede gestionar ubicaciones y objetos
-  - No puede eliminar la organización
-- **MEMBER**: Miembro activo
-  - Puede crear, editar y eliminar objetos
-  - Puede ver ubicaciones y otros objetos
-  - No puede gestionar miembros
-- **VIEWER**: Solo lectura
-  - Puede ver objetos y ubicaciones
-  - No puede crear, editar o eliminar
-  - Útil para consultas y auditoría
-
-### Permisos por Nivel:
-- **Personal**: Solo el propietario tiene acceso
-- **Organizacional**: Según el rol asignado
-- **Público**: Organizaciones marcadas como públicas (solo lectura)
-
-## 🔄 Control de Versiones de Base de Datos
-
-### Buenas Prácticas para Migraciones:
-
-1. **Nunca modificar migraciones existentes** - Crear nuevas migraciones en su lugar
-2. **Revisar migraciones antes de ejecutar** - Verificar que el SQL generado es correcto
-3. **Probar migraciones en desarrollo** - Antes de aplicar en producción
-4. **Incluir migraciones en commits** - Las migraciones son parte del código
-5. **Documentar cambios complejos** - Añadir comentarios en migraciones importantes
-
-### Comandos útiles para desarrollo:
-
-```bash
-# Ver migraciones pendientes
-npm run migration:show
-
-# Ejecutar migraciones en modo verbose
-npm run migration:run -- --verbose
-
-# Generar migración con timestamp específico
-npm run migration:generate -- -n AddNewField -t 20240101000000
-
-# Revertir múltiples migraciones
-npm run migration:revert -- --count 3
-```
+  - Puede gestionar usuarios y organizaciones
+  - Puede ver estadísticas del sistema
 
 ## 📞 Contacto
 

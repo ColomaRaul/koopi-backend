@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: koopi_postgres
+    environment:
+      POSTGRES_DB: koopi_db
+      POSTGRES_USER: koopi_user
+      POSTGRES_PASSWORD: koopi_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - koopi_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U koopi_user -d koopi_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: koopi_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - koopi_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v5.9.0
+    container_name: koopi_swagger
+    ports:
+      - "8081:8080"
+    environment:
+      SWAGGER_JSON: /docs/swagger.json
+    volumes:
+      - ./docs:/docs
+    networks:
+      - koopi_network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  koopi_network:
+    driver: bridge 
